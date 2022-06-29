@@ -1,11 +1,20 @@
 <script lang="ts">
 	export let customClasses: string = "";
 	import stateCards from "../../data/states/cards";
+	import { stateCardSearch } from "../../store";
+
+	let filter: string;
+
+	stateCardSearch.subscribe((value) => {
+		filter = value;
+	});
+
+	$: filteredList = stateCards.filter(stateName => stateName.toLowerCase().includes(filter.toLowerCase()));
 </script>
 
-<section>
+<section class="min-h-screen">
 	<div class={customClasses}>
-		{#each stateCards as state}
+		{#each filteredList as state}
 			<a
 				href="/"
 				class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
@@ -22,7 +31,7 @@
 						{state}
 					</h5>
 					<p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-						State budget for 2022
+						2022 {state} Budget
 					</p>
 				</div>
 			</a>
